@@ -198,6 +198,8 @@ kita break saat memamnggil function bof
     Breakpoint 1 at 0x8048529
     r
 
+.*
+
 pada stack terlihat alamat str mulai mengisi nilai
 pada alamat tertentu yaitu
 
@@ -262,3 +264,53 @@ jika berhasil akan mengarahkan kita ke shellcode
 <br>
 
 Exploit berhasil kita lakukan
+
+***
+
+### Task 2: Address Randomization
+
+pada task 2, kita menyalakan sistem aslr dalam linux dengan command
+
+      sudo sysctl -w kernel.randomize_va_space=2
+
+lalu kita lakukan bruteforce sampai ketemu sesuai dengan alamat address nya,
+
+      sh -c "while [ 1 ]; do ./stack; done;"
+
+kita lakukan loop sampai program bisa tereksekusi.
+
+Bukti :
+
+![](img/task2.png)
+
+Proses while mencari addres yg sesuai (Faktor Lucky,bisa sangat lama, bisa cepat, tapi kebanyakan lama, saya sendiri beberapa jam baru ketemu) :
+
+![](img/prosestask2.png)
+
+Setelah mendapat shell (akhirnyaaaa) :
+![](img/hasiltask2.png)
+
+***
+
+### Task 3: Stack Guard
+
+Pada task ini kita mencoba untuk tidak mematikan stack guard protection yang mana akan menghalangi kita untuk melakukan buffer overflow,
+
+Hasil :
+![](img/task3.png)
+
+***
+
+### Task 4: Non-executable Stack
+
+pada task kali ini kita menjalankan program dengan tidak mengijinkan isi stack dapat dieksekusi
+
+      gcc -o stack -z noexecstack -fno-stack-protector stack.c
+
+perintah noexecstack membuat kita tidak bisa menjalankan shellcode yang ada di dalam Stack
+
+Hasil :
+
+![](img/task4.png)
+
+mendapatkan segmentation fault karena tidak bisa menjalankan payload dalam stack
