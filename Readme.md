@@ -52,6 +52,8 @@ Adapun step step yang harus kita lakukan :
 
 ## 0x02 LAB
 
+### TASK 1 : Exploiting the Vulnerability
+
 #### 1.Mematikan Address Space Randomization pada VM.
 
 Mematikan ASLR dapat kita lakukan dengan command :
